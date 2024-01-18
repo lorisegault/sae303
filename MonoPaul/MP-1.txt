@@ -1,0 +1,116 @@
+
+MP-1#sh startup-config
+Using 1129 out of 57336 bytes!
+
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname MP-1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+memory-size iomem 5
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+no ip domain lookup
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+archive
+ log config
+  hidekeys
+!
+!
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+interface Loopback0
+ ip address 7.7.7.7 255.255.255.255
+!
+interface FastEthernet0/0
+ ip address 10.0.0.22 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 10.0.0.45 255.255.255.252
+ duplex auto
+ speed auto
+!
+router ospf 1
+ log-adjacency-changes
+ network 7.7.7.7 0.0.0.0 area 0
+ network 10.0.0.20 0.0.0.3 area 0
+ network 10.0.0.44 0.0.0.3 area 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+no cdp log mismatch duplex
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login
+!
+!
+end
