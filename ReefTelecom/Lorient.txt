@@ -1,6 +1,6 @@
 
-Lorient(config)#do sh start
-Using 1123 out of 57336 bytes
+Lorient#sh start
+Using 1295 out of 57336 bytes
 !
 version 12.4
 service timestamps debug datetime msec
@@ -76,6 +76,13 @@ interface FastEthernet1/0
  duplex auto
  speed auto
 !
+router ospf 1
+ log-adjacency-changes
+ network 1.1.1.1 0.0.0.0 area 0
+ network 10.0.0.0 0.0.0.3 area 0
+ network 10.0.0.16 0.0.0.3 area 0
+ network 10.0.0.20 0.0.0.3 area 0
+!
 ip forward-protocol nd
 !
 !
@@ -114,3 +121,4 @@ line vty 0 4
 !
 !
 end
+

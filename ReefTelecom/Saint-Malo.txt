@@ -1,5 +1,5 @@
-Saint-Malo(config-if)#do sh start
-Using 1105 out of 57336 bytes
+Saint-Malo#sh start
+Using 1277 out of 57336 bytes
 !
 version 12.4
 service timestamps debug datetime msec
@@ -75,6 +75,13 @@ interface FastEthernet1/0
  shutdown
  duplex auto
  speed auto
+!
+router ospf 1
+ log-adjacency-changes
+ network 3.3.3.3 0.0.0.0 area 0
+ network 10.0.0.8 0.0.0.3 area 0
+ network 10.0.0.12 0.0.0.3 area 0
+ network 10.0.0.32 0.0.0.3 area 0
 !
 ip forward-protocol nd
 !
