@@ -1,5 +1,3 @@
-Vannes#sh star
-Using 1079 out of 57336 bytes
 !
 version 12.4
 service timestamps debug datetime msec
@@ -21,7 +19,7 @@ ip cef
 !
 !
 no ip domain lookup
-!
+!         
 multilink bundle-name authenticated
 !
 !
@@ -44,10 +42,10 @@ multilink bundle-name authenticated
 !
 !
 !
-archive
+archive   
  log config
   hidekeys
-!
+! 
 !
 !
 !
@@ -74,6 +72,13 @@ interface FastEthernet1/0
  duplex auto
  speed auto
 !
+router ospf 1
+ log-adjacency-changes
+ network 2.2.2.2 0.0.0.0 area 0
+ network 10.0.0.0 0.0.0.3 area 0
+ network 10.0.0.4 0.0.0.3 area 0
+ network 10.0.0.24 0.0.0.3 area 0
+!
 ip forward-protocol nd
 !
 !
@@ -83,7 +88,7 @@ no ip http secure-server
 no cdp log mismatch duplex
 !
 !
-!
+!         
 !
 !
 !
