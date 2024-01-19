@@ -1,4 +1,9 @@
 !
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
 hostname SB-2
 !
 boot-start-marker
@@ -37,11 +42,11 @@ multilink bundle-name authenticated
 !
 !
 !
-!
+!         
 archive
  log config
   hidekeys
-!
+! 
 !
 !
 !
@@ -65,8 +70,8 @@ interface FastEthernet0/1
 !
 router ospf 1
  log-adjacency-changes
- network 10.10.10.10 0.0.0.0 area 0
  network 10.0.0.40 0.0.0.3 area 0
+ network 10.10.10.10 0.0.0.0 area 0
  network 192.168.1.0 0.0.0.255 area 0
 !
 ip forward-protocol nd
@@ -83,7 +88,7 @@ no cdp log mismatch duplex
 !
 !
 control-plane
-!
+!         
 !
 !
 !
@@ -106,4 +111,4 @@ line vty 0 4
  login
 !
 !
-end
+end  
