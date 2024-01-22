@@ -1,3 +1,7 @@
+
+Rennes#sh start
+Using 1386 out of 57336 bytes
+!
 version 12.4
 service timestamps debug datetime msec
 service timestamps log datetime msec
@@ -18,7 +22,7 @@ ip cef
 !
 !
 no ip domain lookup
-!         
+!
 multilink bundle-name authenticated
 !
 !
@@ -41,10 +45,10 @@ multilink bundle-name authenticated
 !
 !
 !
-archive   
+archive
  log config
   hidekeys
-! 
+!
 !
 !
 !
@@ -78,6 +82,13 @@ router ospf 1
  network 10.0.0.8 0.0.0.3 area 0
  network 10.0.0.28 0.0.0.3 area 0
 !
+router bgp 65200
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.28 mask 255.255.255.252
+ neighbor 10.0.0.30 remote-as 65300
+ no auto-summary
+!
 ip forward-protocol nd
 !
 !
@@ -87,7 +98,7 @@ no ip http secure-server
 no cdp log mismatch duplex
 !
 !
-!         
+!
 !
 !
 !
