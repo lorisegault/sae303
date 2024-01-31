@@ -61,18 +61,19 @@ interface Loopback0
 !
 interface FastEthernet0/0
  ip address 10.0.0.13 255.255.255.252
+ no shutdown
  duplex auto
  speed auto
 !
 interface FastEthernet0/1
  ip address 10.0.0.10 255.255.255.252
- shutdown
+ no shutdown
  duplex auto
  speed auto
 !
 interface FastEthernet1/0
  ip address 10.0.0.33 255.255.255.252
- shutdown
+ no shutdown
  duplex auto
  speed auto
 !
@@ -83,6 +84,12 @@ router ospf 1
  network 10.0.0.12 0.0.0.3 area 0
  network 10.0.0.32 0.0.0.3 area 0
 !
+router bgp 65200
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.32 mask 255.255.255.252
+ neighbor 10.0.0.34 remote-as 65300
+ no auto-summary
 ip forward-protocol nd
 !
 !

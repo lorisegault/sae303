@@ -1,6 +1,8 @@
 
-Lorient#sh start
-Using 1295 out of 57336 bytes
+Lorient#sh run
+Building configuration...
+
+Current configuration : 1453 bytes
 !
 version 12.4
 service timestamps debug datetime msec
@@ -82,6 +84,13 @@ router ospf 1
  network 10.0.0.0 0.0.0.3 area 0
  network 10.0.0.16 0.0.0.3 area 0
  network 10.0.0.20 0.0.0.3 area 0
+!
+router bgp 65200
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.20 mask 255.255.255.252
+ neighbor 10.0.0.22 remote-as 65100
+ no auto-summary
 !
 ip forward-protocol nd
 !
