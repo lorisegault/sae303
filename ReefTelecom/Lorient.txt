@@ -1,8 +1,3 @@
-
-Lorient#sh run
-Building configuration...
-
-Current configuration : 1453 bytes
 !
 version 12.4
 service timestamps debug datetime msec
@@ -26,6 +21,7 @@ ip cef
 !
 no ip domain lookup
 !
+mpls ldp session protection
 multilink bundle-name authenticated
 !
 !
@@ -46,12 +42,12 @@ multilink bundle-name authenticated
 !
 !
 !
-!
+!         
 !
 archive
  log config
   hidekeys
-!
+! 
 !
 !
 !
@@ -67,11 +63,15 @@ interface FastEthernet0/0
  ip address 10.0.0.18 255.255.255.252
  duplex auto
  speed auto
-!
+ mpls label protocol ldp
+ mpls ip
+!         
 interface FastEthernet0/1
  ip address 10.0.0.1 255.255.255.252
  duplex auto
  speed auto
+ mpls label protocol ldp
+ mpls ip
 !
 interface FastEthernet1/0
  ip address 10.0.0.21 255.255.255.252
@@ -111,7 +111,7 @@ control-plane
 !
 !
 !
-!
+!         
 !
 !
 !
@@ -130,4 +130,3 @@ line vty 0 4
 !
 !
 end
-
