@@ -1,5 +1,14 @@
-Saint-Malo#sh start
-Using 1277 out of 57336 bytes
+
+Building configuration...
+[OK]
+Saint-Malo(config)#sh run
+                     ^
+% Invalid input detected at '^' marker.
+
+Saint-Malo(config)#do sh run
+Building configuration...
+
+Current configuration : 1483 bytes
 !
 version 12.4
 service timestamps debug datetime msec
@@ -61,19 +70,20 @@ interface Loopback0
 !
 interface FastEthernet0/0
  ip address 10.0.0.13 255.255.255.252
- no shutdown
  duplex auto
  speed auto
+ mpls label protocol ldp
+ mpls ip
 !
 interface FastEthernet0/1
  ip address 10.0.0.10 255.255.255.252
- no shutdown
  duplex auto
  speed auto
+ mpls label protocol ldp
+ mpls ip
 !
 interface FastEthernet1/0
  ip address 10.0.0.33 255.255.255.252
- no shutdown
  duplex auto
  speed auto
 !
@@ -90,6 +100,7 @@ router bgp 65200
  network 10.0.0.32 mask 255.255.255.252
  neighbor 10.0.0.34 remote-as 65300
  no auto-summary
+!
 ip forward-protocol nd
 !
 !
