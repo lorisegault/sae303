@@ -61,11 +61,15 @@ interface FastEthernet0/0
  ip address 10.0.0.2 255.255.255.252
  duplex auto
  speed auto
+ mpls label protocol ldp
+ mpls ip
 !
 interface FastEthernet0/1
  ip address 10.0.0.5 255.255.255.252
  duplex auto
  speed auto
+ mpls label protocol ldp
+ mpls ip
 !
 interface FastEthernet1/0
  ip address 10.0.0.25 255.255.255.252
@@ -79,6 +83,13 @@ router ospf 1
  network 10.0.0.4 0.0.0.3 area 0
  network 10.0.0.24 0.0.0.3 area 0
 !
+router bgp 65200
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.24 mask 255.255.255.252
+ neighbor 10.0.0.26 remote-as 65100
+ no auto-summary
+!
 ip forward-protocol nd
 !
 !
@@ -88,7 +99,7 @@ no ip http secure-server
 no cdp log mismatch duplex
 !
 !
-!         
+!
 !
 !
 !
@@ -100,7 +111,7 @@ control-plane
 !
 !
 !
-!
+!         
 !
 !
 line con 0
