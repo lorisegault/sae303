@@ -58,8 +58,15 @@ ip tcp synwait-time 5
 interface Loopback0
  ip address 10.10.10.10 255.255.255.255
 !
+interface Loopback1
+ ip address 192.168.4.1 255.255.255.0
+!
+interface Loopback2
+ ip address 192.168.5.1 255.255.255.0
+!
 interface FastEthernet0/0
  ip address 10.0.0.42 255.255.255.252
+ ip policy route-map LB
  duplex auto
  speed auto
 !
@@ -87,9 +94,17 @@ ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
+access-list 1 permit 10.0.0.40 0.0.0.3
 no cdp log mismatch duplex
 !
 !
+!
+route-map LB permit 10
+ match ip address 1
+ set ip next-hop 10.0.0.41
+!
+route-map LB permit 20
+ set ip next-hop 10.0.0.42 192.168.1.2 192.168.1.1
 !
 !
 !
