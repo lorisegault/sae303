@@ -104,7 +104,7 @@ route-map LB permit 10
  set ip next-hop 10.0.0.41
 !
 route-map LB permit 20
- set ip next-hop 10.0.0.42 192.168.1.2 192.168.1.1
+ set ip next-hop 192.168.1.1
 !
 !
 !
