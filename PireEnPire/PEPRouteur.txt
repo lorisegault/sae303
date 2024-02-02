@@ -79,6 +79,17 @@ router ospf 1
  network 10.0.0.36 0.0.0.3 area 0
  network 10.0.0.40 0.0.0.3 area 0
 !
+router bgp 65300
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.28 mask 255.255.255.252
+ network 10.0.0.36 mask 255.255.255.252
+ network 10.0.0.40 mask 255.255.255.252
+ neighbor 10.0.0.29 remote-as 65200
+ neighbor 10.0.0.38 remote-as 65100
+ neighbor 10.0.0.42 remote-as 65400
+ no auto-summary
+!
 ip forward-protocol nd
 !
 !
@@ -88,7 +99,7 @@ no ip http secure-server
 no cdp log mismatch duplex
 !
 !
-!         
+!
 !
 !
 !
@@ -100,7 +111,7 @@ control-plane
 !
 !
 !
-!
+!         
 !
 !
 line con 0
