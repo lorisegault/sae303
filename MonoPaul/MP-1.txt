@@ -1,8 +1,3 @@
-
-MP-1#sh startup-config
-Using 1129 out of 57336 bytes!
-
-!
 version 12.4
 service timestamps debug datetime msec
 service timestamps log datetime msec
@@ -23,7 +18,7 @@ ip cef
 !
 !
 no ip domain lookup
-!
+!         
 multilink bundle-name authenticated
 !
 !
@@ -46,10 +41,10 @@ multilink bundle-name authenticated
 !
 !
 !
-archive
+archive   
  log config
   hidekeys
-!
+! 
 !
 !
 !
@@ -60,6 +55,12 @@ ip tcp synwait-time 5
 !
 interface Loopback0
  ip address 7.7.7.7 255.255.255.255
+!
+interface Loopback1
+ ip address 192.168.7.1 255.255.255.0
+!
+interface Loopback2
+ ip address 192.168.8.1 255.255.255.0
 !
 interface FastEthernet0/0
  ip address 10.0.0.22 255.255.255.252
@@ -77,9 +78,16 @@ router ospf 1
  network 10.0.0.20 0.0.0.3 area 0
  network 10.0.0.44 0.0.0.3 area 0
 !
+router bgp 65100
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.44 mask 255.255.255.252
+ neighbor 10.0.0.20 remote-as 65200
+ no auto-summary
+!
 ip forward-protocol nd
 !
-!
+!         
 no ip http server
 no ip http secure-server
 !
