@@ -1,8 +1,14 @@
-hostname SB-1
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SB-2
 !
 boot-start-marker
 boot-end-marker
 !
+enable password bonjour
 !
 no aaa new-model
 memory-size iomem 5
@@ -49,23 +55,30 @@ ip tcp synwait-time 5
 !
 !
 interface Loopback0
- ip address 9.9.9.9 255.255.255.255
+ ip address 10.10.10.10 255.255.255.255
 !
 interface FastEthernet0/0
- ip address 10.0.0.34 255.255.255.252
+ ip address 10.0.0.42 255.255.255.252
  duplex auto
  speed auto
 !
 interface FastEthernet0/1
- ip address 192.168.1.1 255.255.255.0
+ ip address 192.168.1.2 255.255.255.0
  duplex auto
  speed auto
 !
 router ospf 1
  log-adjacency-changes
- network 9.9.9.9 0.0.0.0 area 0
- network 10.0.0.32 0.0.0.3 area 0
+ network 10.0.0.40 0.0.0.3 area 0
+ network 10.10.10.10 0.0.0.0 area 0
  network 192.168.1.0 0.0.0.255 area 0
+!
+router bgp 65400
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.40 mask 255.255.255.252
+ neighbor 10.0.0.41 remote-as 65300
+ no auto-summary
 !
 ip forward-protocol nd
 !
@@ -100,6 +113,7 @@ line aux 0
  privilege level 15
  logging synchronous
 line vty 0 4
+ password bonjour
  login
 !
 !
