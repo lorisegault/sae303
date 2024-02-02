@@ -42,11 +42,11 @@ multilink bundle-name authenticated
 !
 !
 !
-!         
+!
 archive
  log config
   hidekeys
-! 
+!
 !
 !
 !
@@ -74,6 +74,13 @@ router ospf 1
  network 10.10.10.10 0.0.0.0 area 0
  network 192.168.1.0 0.0.0.255 area 0
 !
+router bgp 65400
+ no synchronization
+ bgp log-neighbor-changes
+ network 10.0.0.40 mask 255.255.255.252
+ neighbor 10.0.0.41 remote-as 65300
+ no auto-summary
+!
 ip forward-protocol nd
 !
 !
@@ -88,7 +95,7 @@ no cdp log mismatch duplex
 !
 !
 control-plane
-!         
+!
 !
 !
 !
@@ -111,4 +118,4 @@ line vty 0 4
  login
 !
 !
-end  
+end
