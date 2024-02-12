@@ -41,7 +41,7 @@ multilink bundle-name authenticated
 !
 !
 !
-archive   
+archive
  log config
   hidekeys
 ! 
@@ -83,13 +83,19 @@ router ospf 1
  network 10.0.0.24 0.0.0.3 area 0
  network 10.0.0.36 0.0.0.3 area 0
  network 10.0.0.44 0.0.0.3 area 0
+ network 192.168.9.0 0.0.0.255 area 0
+ network 192.168.10.0 0.0.0.255 area 0
 !
 router bgp 65100
  no synchronization
  bgp log-neighbor-changes
  network 10.0.0.44 mask 255.255.255.252
+ neighbor 7.7.7.7 remote-as 65100
+ neighbor 7.7.7.7 update-source Loopback0
  neighbor 10.0.0.25 remote-as 65200
- neighbor 10.0.0.36 remote-as 65300
+ neighbor 10.0.0.25 route-map EXPORT_TO_Vannes_PEP out
+ neighbor 10.0.0.37 remote-as 65300
+ neighbor 10.0.0.37 route-map EXPORT_TO_Vannes_PEP out
  no auto-summary
 !
 ip forward-protocol nd
@@ -98,9 +104,18 @@ ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
+!
+ip prefix-list PREFIX_LIST_TO_EXPORT seq 5 permit 192.168.7.0/24
+ip prefix-list PREFIX_LIST_TO_EXPORT seq 10 permit 192.168.8.0/24
+ip prefix-list PREFIX_LIST_TO_EXPORT seq 15 permit 192.168.9.0/24
+ip prefix-list PREFIX_LIST_TO_EXPORT seq 20 permit 192.168.10.0/24
 no cdp log mismatch duplex
 !
+!         
 !
+route-map EXPORT_TO_Vannes_PEP permit 10
+ match ip address prefix-list PREFIX_LIST_TO_EXPORT
+ set community 4266393601
 !
 !
 !
@@ -110,7 +125,7 @@ control-plane
 !
 !
 !
-!         
+!
 !
 !
 !
