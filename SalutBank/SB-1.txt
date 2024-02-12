@@ -20,9 +20,6 @@ ip cef
 no ip domain lookup
 !         
 multilink bundle-name authenticated
-!         
-!         
-!         
 !
 !
 !
@@ -41,11 +38,14 @@ multilink bundle-name authenticated
 !
 !
 !
-archive
+!
+!
+!
+archive   
  log config
   hidekeys
 ! 
-!         
+!
 !
 !
 ip tcp synwait-time 5
@@ -64,7 +64,6 @@ interface Loopback2
 !
 interface FastEthernet0/0
  ip address 10.0.0.34 255.255.255.252
- ip policy route-map LB
  duplex auto
  speed auto
 !
@@ -78,31 +77,40 @@ router ospf 1
  network 9.9.9.9 0.0.0.0 area 0
  network 10.0.0.32 0.0.0.3 area 0
  network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.11.0 0.0.0.255 area 0
+ network 192.168.12.0 0.0.0.255 area 0
 !
 router bgp 65400
  no synchronization
  bgp log-neighbor-changes
  network 10.0.0.32 mask 255.255.255.252
  neighbor 10.0.0.33 remote-as 65200
+ neighbor 10.0.0.33 route-map pref-ReefTelecom-in in
+ neighbor 10.0.0.33 route-map pref-ReefTelecom-out out
+ neighbor 10.10.10.10 remote-as 65400
+ neighbor 10.10.10.10 update-source Loopback0
  no auto-summary
 !
 ip forward-protocol nd
 !
+ip as-path access-list 1 permit ^65200$
 !
 no ip http server
 no ip http secure-server
-!         
-access-list 2 permit 10.0.0.32 0.0.0.3
+!
+access-list 10 permit 192.168.11.0 0.0.0.255
+access-list 10 permit 192.168.12.0 0.0.0.255
+access-list 10 permit 192.168.13.0 0.0.0.255
+access-list 10 permit 192.168.14.0 0.0.0.255
 no cdp log mismatch duplex
 !
 !
 !
-route-map LB permit 10
- match ip address 2
- set ip next-hop 10.0.0.33
+route-map pref-ReefTelecom-out permit 10
+ match ip address 10
 !
-route-map LB permit 20
- set ip next-hop 192.168.1.2
+route-map pref-ReefTelecom-in permit 10
+ match ip address 10
 !
 !
 !
@@ -114,7 +122,7 @@ control-plane
 !
 !
 !
-!         
+!
 !
 !
 !
@@ -131,3 +139,4 @@ line vty 0 4
 !
 !
 end
+
