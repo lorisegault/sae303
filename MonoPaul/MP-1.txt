@@ -1,3 +1,6 @@
+
+Current configuration : 2184 bytes
+!
 version 12.4
 service timestamps debug datetime msec
 service timestamps log datetime msec
@@ -18,23 +21,23 @@ ip cef
 !
 !
 no ip domain lookup
-!         
+!
 multilink bundle-name authenticated
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
-!         
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
 !
 !
 !
@@ -44,7 +47,7 @@ multilink bundle-name authenticated
 archive
  log config
   hidekeys
-! 
+!
 !
 !
 !
@@ -87,6 +90,7 @@ router bgp 65100
  neighbor 8.8.8.8 remote-as 65100
  neighbor 8.8.8.8 update-source Loopback0
  neighbor 10.0.0.21 remote-as 65200
+ neighbor 10.0.0.21 route-map MP_RT_LIEN_SECONDAIRE in
  neighbor 10.0.0.21 route-map EXPORT_TO_Lorient out
  no auto-summary
 !
@@ -101,9 +105,14 @@ ip prefix-list PREFIX_LIST_TO_EXPORT seq 5 permit 192.168.7.0/24
 ip prefix-list PREFIX_LIST_TO_EXPORT seq 10 permit 192.168.8.0/24
 ip prefix-list PREFIX_LIST_TO_EXPORT seq 15 permit 192.168.9.0/24
 ip prefix-list PREFIX_LIST_TO_EXPORT seq 20 permit 192.168.10.0/24
+access-list 10 permit 10.0.0.0 0.255.255.255
 no cdp log mismatch duplex
 !
-!         
+!
+!
+route-map MP_RT_LIEN_SECONDAIRE permit 10
+ match ip address 10
+ set local-preference 300
 !
 route-map EXPORT_TO_Lorient permit 10
  match ip address prefix-list PREFIX_LIST_TO_EXPORT

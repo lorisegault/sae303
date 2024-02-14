@@ -1,10 +1,4 @@
-!
-version 12.4
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-!
-hostname Lorient
+
 !
 boot-start-marker
 boot-end-marker
@@ -42,12 +36,12 @@ multilink bundle-name authenticated
 !
 !
 !
-!         
+!
 !
 archive
  log config
   hidekeys
-! 
+!
 !
 !
 !
@@ -61,13 +55,15 @@ interface Loopback0
 !
 interface FastEthernet0/0
  ip address 10.0.0.18 255.255.255.252
+ ip router isis
  duplex auto
  speed auto
  mpls label protocol ldp
  mpls ip
-!         
+!
 interface FastEthernet0/1
  ip address 10.0.0.1 255.255.255.252
+ ip router isis
  duplex auto
  speed auto
  mpls label protocol ldp
@@ -75,6 +71,7 @@ interface FastEthernet0/1
 !
 interface FastEthernet1/0
  ip address 10.0.0.21 255.255.255.252
+ ip router isis
  duplex auto
  speed auto
 !
@@ -85,11 +82,25 @@ router ospf 1
  network 10.0.0.16 0.0.0.3 area 0
  network 10.0.0.20 0.0.0.3 area 0
 !
+router isis
+ net 49.1234.1111.1111.1111.00
+ domain-password bonjour
+!
 router bgp 65200
- no synchronization
+ synchronization
  bgp log-neighbor-changes
+ network 1.1.1.1 mask 255.255.255.255
  network 10.0.0.20 mask 255.255.255.252
+ neighbor 2.2.2.2 remote-as 65200
+ neighbor 2.2.2.2 update-source Loopback0
+ neighbor 3.3.3.3 remote-as 65200
+ neighbor 3.3.3.3 update-source Loopback0
+ neighbor 4.4.4.4 remote-as 65200
+ neighbor 4.4.4.4 update-source Loopback0
+ neighbor 5.5.5.5 remote-as 65200
+ neighbor 5.5.5.5 update-source Loopback0
  neighbor 10.0.0.22 remote-as 65100
+ neighbor 10.0.0.22 route-map RT_MP_LIEN_PRINCIPAL in
  no auto-summary
 !
 ip forward-protocol nd
@@ -98,9 +109,14 @@ ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
+access-list 10 permit 10.0.0.44 0.0.0.3
 no cdp log mismatch duplex
 !
 !
+!
+route-map RT_MP_LIEN_PRINCIPAL permit 10
+ match ip address 10
+ set local-preference 300
 !
 !
 !
@@ -111,7 +127,7 @@ control-plane
 !
 !
 !
-!         
+!
 !
 !
 !
